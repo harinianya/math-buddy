@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Buddy — HCF & LCM Explorer</title>
+<style>
+:root{--ink:#25304a;--muted:#68738b;--purple:#7757e8;--pink:#ff7ca8;--mint:#baf3dc;--yellow:#ffe08a;--sky:#dff4ff;--paper:#fffdf8;--line:#e8e8f2;--shadow:0 14px 36px #34406b16}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f5f0ff,#eefaff 55%,#fff7e8);font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif;color:var(--ink);min-height:100vh}
+header{padding:24px 18px 14px;text-align:center}.brand{display:inline-flex;align-items:center;gap:9px;background:#fff;padding:8px 15px;border-radius:999px;box-shadow:var(--shadow);font-weight:800;color:var(--purple);font-size:.9rem}.logo{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--yellow);font-size:19px}
+h1{font-size:clamp(2rem,5vw,3.2rem);margin:16px 0 7px;letter-spacing:-1.5px}h1 span{color:var(--purple)}.sub{color:var(--muted);margin:0 auto;max-width:620px;line-height:1.55}
+main{max-width:1060px;margin:0 auto;padding:14px 16px 44px;display:grid;grid-template-columns: minmax(280px,.82fr) minmax(320px,1.18fr);gap:18px}
+.panel{background:#ffffffd9;border:1px solid #ffffff;border-radius:25px;padding:22px;box-shadow:var(--shadow);min-width:0}.panel h2{font-size:1.18rem;margin:0 0 16px}.eyebrow{text-transform:uppercase;letter-spacing:1.5px;font-size:.72rem;font-weight:900;color:var(--purple);margin-bottom:7px}
+label{display:block;font-size:.88rem;font-weight:800;margin:12px 0 7px}input{width:100%;border:2px solid var(--line);background:#fff;border-radius:14px;padding:13px 14px;font:inherit;font-size:1.05rem;color:var(--ink);outline:none;transition:.2s}input:focus{border-color:var(--purple);box-shadow:0 0 0 4px #7757e81b}
+.inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn{border:0;border-radius:14px;padding:12px 16px;font:inherit;font-weight:900;cursor:pointer;transition:transform .15s,filter .15s}.btn:hover{transform:translateY(-2px);filter:brightness(1.02)}.btn:active{transform:scale(.98)}.primary{width:100%;margin-top:16px;background:var(--purple);color:white;box-shadow:0 8px 18px #7757e833}.secondary{background:#f0ebff;color:var(--purple)}.examples{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid #e4defd;background:#faf8ff;color:#5843a6;border-radius:999px;padding:8px 12px;font:inherit;font-size:.83rem;font-weight:800;cursor:pointer}.chip:hover{background:#ece5ff}.tip{margin-top:16px;padding:13px 14px;border-radius:15px;background:#fff6d9;color:#695622;font-size:.87rem;line-height:1.5}.tip strong{display:block;margin-bottom:3px}
+.results-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.results-head h2{margin:0}.pill{background:#e9fbf2;color:#24724e;border-radius:999px;padding:6px 10px;font-size:.75rem;font-weight:900}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}.result-card{border-radius:19px;padding:16px;position:relative;overflow:hidden;min-height:126px}.result-card.hcf{background:#efeaff}.result-card.lcm{background:#e1f8ee}.result-card .label{font-size:.8rem;font-weight:900;opacity:.8}.result-card .number{font-size:2.4rem;font-weight:950;letter-spacing:-1px;margin:8px 0 4px;line-height:1}.result-card small{font-size:.78rem;color:#59647a}.spark{position:absolute;right:12px;top:10px;font-size:24px;opacity:.7}
+.explain{border:1px solid var(--line);border-radius:18px;padding:16px;background:#fff}.explain h3{font-size:1rem;margin:0 0 8px}.steps{display:grid;gap:10px}.step{display:grid;grid-template-columns:31px 1fr;gap:10px;align-items:start;opacity:0;transform:translateY(8px);animation:pop .42s ease forwards}.step:nth-child(2){animation-delay:.12s}.step:nth-child(3){animation-delay:.24s}.step:nth-child(4){animation-delay:.36s}.step:nth-child(5){animation-delay:.48s}.step:nth-child(6){animation-delay:.6s}@keyframes pop{to{opacity:1;transform:translateY(0)}}.stepnum{width:29px;height:29px;border-radius:10px;background:var(--sky);display:grid;place-items:center;font-weight:900;color:#276b90;font-size:.85rem}.step p{margin:2px 0 0;line-height:1.5;font-size:.9rem}.math{font-weight:900;color:#5540b5}.factor-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}.factor{padding:5px 8px;border-radius:8px;background:#f1edff;font-size:.83rem;font-weight:900}.factor.shared{background:#d8f8e9;color:#176c4a}.empty{padding:25px 10px;text-align:center;color:var(--muted);line-height:1.6}.empty .big{font-size:2.8rem;margin-bottom:8px}.error{color:#b52f53;font-size:.86rem;font-weight:800;margin-top:9px;min-height:1em}.footer{text-align:center;color:var(--muted);font-size:.8rem;padding:0 16px 25px}
+@media(max-width:760px){main{grid-template-columns:1fr;padding-top:8px}.panel{padding:18px}header{padding-top:20px}.result-card .number{font-size:2.1rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="logo">🧠</span> MATH BUDDY <span>•</span> LEARN BY EXPLORING</div>
+  <h1>Discover <span>HCF</span> & <span>LCM</span>!</h1>
+  <p class="sub">A friendly maths playground. Pick two numbers, discover the answers, and see <b>how we found them</b> step by step.</p>
+</header>
+<main>
+<section class="panel">
+  <div class="eyebrow">Your number lab</div>
+  <h2>🔢 Choose two numbers</h2>
+  <div class="inputs">
+    <div><label for="numA">First number</label><input id="numA" type="number" min="1" max="10000" value="12" inputmode="numeric"></div>
+    <div><label for="numB">Second number</label><input id="numB" type="number" min="1" max="10000" value="18" inputmode="numeric"></div>
+  </div>
+  <button class="btn primary" id="solveBtn">✨ Solve & show me why!</button>
+  <div class="error" id="error" role="status" aria-live="polite"></div>
+  <div style="height:1px;background:var(--line);margin:18px 0"></div>
+  <div class="eyebrow">Try an example</div>
+  <h2 style="margin-bottom:12px">🎯 Tap to explore</h2>
+  <div class="examples">
+    <button class="chip" data-a="6" data-b="8">6 & 8 · Easy</button>
+    <button class="chip" data-a="12" data-b="18">12 & 18 · Friendly</button>
+    <button class="chip" data-a="15" data-b="25">15 & 25</button>
+    <button class="chip" data-a="24" data-b="36">24 & 36</button>
+    <button class="chip" data-a="48" data-b="60">48 & 60</button>
+    <button class="chip" data-a="72" data-b="90">72 & 90 · Challenge</button>
+  </div>
+  <div class="tip"><strong>💡 Remember</strong>HCF is the <b>biggest number</b> that divides both numbers exactly. LCM is the <b>smallest positive number</b> that both numbers divide into exactly.</div>
+</section>
+<section class="panel" id="answerPanel" aria-live="polite">
+  <div class="results-head"><h2>🌟 Your answer</h2><span class="pill" id="statusPill">Ready to learn</span></div>
+  <div id="results">
+    <div class="empty"><div class="big">🪄</div><b>Your maths adventure starts here!</b><br>Choose two numbers and tap <i>Solve & show me why!</i><br>We'll find HCF and LCM together.</div>
+  </div>
+</section>
+</main>
+<div class="footer">Made for curious mathematicians · Try, learn, and try again! 🚀</div>
+<script>
+const $ = id => document.getElementById(id);
+const gcd = (a,b) => { while(b){const r=a%b;a=b;b=r;} return a; };
+function primeFactors(n){
+  const out=[]; let d=2;
+  while(d*d<=n){while(n%d===0){out.push(d);n/=d;}d=d===2?3:d+2;}
+  if(n>1)out.push(n);
+  return out;
+}
+function factorText(n){
+  if(n===1)return '1 (no prime factors)';
+  return primeFactors(n).join(' × ');
+}
+function groupedFactors(n){
+  if(n===1)return [{p:1,count:1}];
+  const map={}; primeFactors(n).forEach(p=>map[p]=(map[p]||0)+1);
+  return Object.keys(map).map(Number).sort((a,b)=>a-b).map(p=>({p,count:map[p]}));
+}
+function factorPills(n, other){
+  const a=groupedFactors(n), b=groupedFactors(other), counts={};
+  b.forEach(x=>counts[x.p]=x.count);
+  let html='<div class="factor-row">';
+  a.forEach(x=>{for(let i=0;i<x.count;i++){const shared=(counts[x.p]||0)>0;if(shared)counts[x.p]--;html+=`<span class="factor ${shared?'shared':''}">${x.p}</span>`;}});
+  return html+'</div>';
+}
+function solve(){
+  const a=Number($('numA').value), b=Number($('numB').value);
+  $('error').textContent='';
+  if(!Number.isInteger(a)||!Number.isInteger(b)||a<1||b<1||a>10000||b>10000){
+    $('error').textContent='Please enter whole numbers from 1 to 10,000.';
+    $('statusPill').textContent='Check your numbers'; return;
+  }
+  const h=gcd(a,b), l=a/h*b, fa=primeFactors(a), fb=primeFactors(b);
+  const common=groupedFactors(h);
+  const sharedText=h===1?'There are no shared prime factors (other than 1).':`${factorText(h)} = ${h}`;
+  const hcfFactors=h===1?'1':factorText(h);
+  const steps=[
+    `<b>Step 1 — Break into prime factors</b><br>${a} = <span class="math">${factorText(a)}</span><br>${b} = <span class="math">${factorText(b)}</span>`,
+    `<b>Step 2 — Find the shared factors</b><br>Take only the prime factors both numbers have in common, using each shared copy once. ${sharedText}`,
+    `<b>Step 3 — HCF is the shared part</b><br>Multiply the shared prime factors: <span class="math">${hcfFactors} = ${h}</span>. So HCF = <b>${h}</b>.`,
+    `<b>Step 4 — Build the LCM</b><br>Use every prime factor needed to make both numbers, taking the greatest number of copies of each. Here, LCM = (${a} × ${b}) ÷ HCF.`,
+    `<b>Step 5 — Calculate</b><br><span class="math">(${a} × ${b}) ÷ ${h} = ${l}</span>. So LCM = <b>${l}</b>.`,
+    `<b>Step 6 — Check your answer</b><br>${a} ÷ ${h} = ${a/h} and ${b} ÷ ${h} = ${b/h}, with no remainder. ${l} is divisible by both ${a} and ${b}. 🎉`
+  ];
+  $('results').innerHTML=`
+    <div class="result-grid">
+      <div class="result-card hcf"><span class="spark">🤝</span><div class="label">HCF · Greatest Common Factor</div><div class="number">${h}</div><small>The biggest shared divisor</small></div>
+      <div class="result-card lcm"><span class="spark">🚀</span><div class="label">LCM · Least Common Multiple</div><div class="number">${l}</div><small>The first shared multiple</small></div>
+    </div>
+    <div class="explain"><h3>🧩 How did we get the answers?</h3><div class="steps">${steps.map((s,i)=>`<div class="step"><div class="stepnum">${i+1}</div><p>${s}</p></div>`).join('')}</div>
+    <div style="margin-top:16px;padding:12px;border-radius:12px;background:#f5f2ff"><b>🔍 Prime-factor peek</b><br><span style="font-size:.86rem">Green chips show shared factors in the first number.</span><div style="margin-top:8px"><b>${a}</b> ${factorPills(a,b)}</div><div style="margin-top:8px"><b>${b}</b> ${factorPills(b,a)}</div></div></div>`;
+  $('statusPill').textContent='You did it! 🎉';
+}
+$('solveBtn').addEventListener('click',()=>{
+  solve();
+  if(!$('error').textContent){
+    $('answerPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+});
+document.querySelectorAll('.chip').forEach(btn=>btn.addEventListener('click',()=>{
+  $('numA').value=btn.dataset.a;$('numB').value=btn.dataset.b;solve();
+}));
+['numA','numB'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')solve();}));
+solve();
+</script>
+</body>
+</html>
